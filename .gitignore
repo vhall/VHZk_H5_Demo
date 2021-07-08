@@ -1,0 +1,13 @@
+.DS_Store
+node_modules
+dist
+sdk
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.idea
+fe_jssdk
+package-lock.json

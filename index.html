@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <!-- qq分享显示的标题-->
+  <meta itemprop="name" content="微吼知客jssdk-h5-demo"/>
+  <!-- qq分享显示的缩略图-->
+  <meta itemprop="image" content=""/>
+  <!-- qq分享显示的简介-->
+  <meta itemprop="description" name="description" content="微吼知客jssdk-h5-demo"/>
+  <title>微吼知客jssdk-h5-demo</title>
+  <link rel="stylesheet" href="//cnstatic01.e.vhall.com/3rdlibs/zhike/h5_iconfont/1.9.7/iconfont.css"/>
+  <link rel="stylesheet" href="//static.vhallyun.com/jssdk/videojs.min.css?v=20181013123123"/>
+</head>
+<body class="scroll">
+<script>
+  function checkWebp(){
+    try {
+      window.webp = (document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') == 0);
+      if (window.webp) {
+        document.body.setAttribute('class', 'scroll webp')
+      }
+    } catch(err) {
+      window.webp = false
+    }
+  }
+  checkWebp()
+</script>
+  <div id="root"></div>
+  <!-- 观看 -->
+  <% if(process.env.BUILD_ENV!='prod') { %>
+    <script src="//static-zhike.vhall.com/fe_jssdk_test/1.0.0/zk-jssdk.js"></script>
+    <script src="//cnstatic01.e.vhall.com/3rdlibs/vue/2.5.16/vue.js"></script>
+    <script src="//cnstatic01.e.vhall.com/3rdlibs/vuex/3.0.1/vuex.js"></script>
+    <script src="//cnstatic01.e.vhall.com/3rdlibs/vue-router/3.0.1/vue-router.js"></script>
+    <script src="//cnstatic01.e.vhall.com/3rdlibs/axios/0.18.0/axios.js"></script>
+  <% } else { %>
+    <script src="//static-zhike.vhall.com/fe_jssdk_prod/1.0.0/zk-jssdk.min.js"></script>
+    <script src="//cnstatic01.e.vhall.com/3rdlibs/vue/2.5.16/vue.min.js"></script>
+    <script src="//cnstatic01.e.vhall.com/3rdlibs/vuex/3.0.1/vuex.min.js"></script>
+    <script src="//cnstatic01.e.vhall.com/3rdlibs/vue-router/3.0.1/vue-router.min.js"></script>
+    <script src="//cnstatic01.e.vhall.com/3rdlibs/axios/0.18.0/axios.min.js"></script>
+  <% } %>
+  <!-- 验证码 -->
+  <script src="//cnstatic01.e.vhall.com/3rdlibs/yidun/captcha/load.min.js"></script>
+  <!-- 聊天消息 -->
+  <script src="//static.vhallyun.com/jssdk/vhall-jssdk-base/vhall-msg-2.0.0.js?oldver=1.0.11&t=5"></script>
+  <script src="//static.vhallyun.com/jssdk/vhall-jssdk-chat/3.0.0/vhall-jssdk-chat-3.0.0.js?t=5"></script>
+  <!-- 观看 -->
+  <script src="//static.vhallyun.com/jssdk/vhall-jssdk-player/latest/vhall-jssdk-player-2.3.1.js"></script>
+  <!-- 文档白板 -->
+  <script src="//static.vhallyun.com/jssdk/vhall-jssdk-doc/latest/vhall-jssdk-doc-3.1.2.js"></script>
+  <script>
+    document.addEventListener('focusout', function (e) {
+      let s = setTimeout(function () {
+        clearTimeout(s)
+        window.scrollTo(0, 0)
+      }, 200)
+    })
+  </script>
+</body>
+
+</html>

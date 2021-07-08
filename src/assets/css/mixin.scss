@@ -1,0 +1,263 @@
+@import './variable';
+
+@mixin tl($direction: left) {
+  text-align: $direction;
+  text-align-last: $direction;
+}
+
+.tl-c{
+  @include tl(center)
+}
+
+@mixin border($bd-color: $color-bd) {
+  border: solid 1px $bd-color;
+  box-sizing: border-box;
+}
+
+@mixin border-shadow {
+  box-sizing: border-box;
+  -moz-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.08);
+  -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.08);
+  @include border;
+}
+
+@mixin button-normal(
+  $bg-color: $color-default,
+  $hover-color: $color-default-hover,
+  $active-color: $color-default-active
+) {
+  height: 40px;
+  line-height: normal;
+  border-radius: 20px;
+  border: none;
+  padding: 0 30px;
+  font-size: 28px;
+  color: #222;
+  background-color: $bg-color;
+  box-sizing: border-box;
+  &:hover {
+    transition: background-color 0.3s, opacity 0.1s;
+    cursor: pointer;
+    background-color: $hover-color;
+    opacity: 0.9;
+  }
+  &:active {
+    background-color: $active-color;
+    opacity: 1;
+  }
+}
+
+/* 默认按钮 */
+@mixin default-button() {
+  @include button-normal(
+    $color-fff,
+    $color-default-hover,
+    $color-default-active
+  );
+  border: solid 1px #888888;
+  background-color: transparent;
+  color: #555;
+  &:hover,
+  &:active {
+    border-color: transparent;
+  }
+}
+
+/* 主要按钮 */
+@mixin primary-button() {
+  @include button-normal();
+  &[disabled] {
+    opacity: 0.3;
+    cursor: no-drop;
+  }
+}
+
+/* 红色按钮 */
+@mixin red-button() {
+  @include button-normal($color-red, $color-red-hover, $color-red-active);
+}
+
+/* 蓝色按钮 */
+@mixin blue-button() {
+  @include button-normal($color-blue, $color-blue-hover, $color-blue-active);
+}
+
+.default-button {
+  @include default-button;
+}
+
+.primary-button {
+  @include primary-button;
+}
+
+.red-button {
+  @include red-button;
+}
+
+.blue-button {
+  @include blue-button;
+}
+
+@mixin linear($color1: #000, $color2: #fff, $angle: 180deg) {
+  background: ($color1 + $color2)/2;
+  background: linear-gradient($angle, $color1, $color2);
+}
+
+@mixin animate($type: all, $sec: 0.2s, $animation: ease-in) {
+  transition: $type $sec $animation;
+}
+
+@mixin no-wrap($text: ellipsis) {
+  text-overflow: $text;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+@mixin flex(
+  $justify: flex-start,
+  $align-items: center,
+  $dir: row,
+  $wrap: nowrap,
+  $align-content: stretch
+) {
+  display: flex;
+  flex-flow: $dir $wrap;
+  justify-content: $justify;
+  align-items: $align-items;
+  align-content: $align-content;
+}
+
+@mixin border-1px($borderColor: #e2e2e2, $direction: ''){
+  position: relative;
+  border:none;
+  @if $direction == bottom {
+    &:after{
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      left: 0;
+      right: auto;
+      bottom: 0;
+      top: auto;
+      transform: scaleY(0.5);
+      transform-origin: 0 0;
+      pointer-events: none;
+      box-sizing: border-box;
+      background: $borderColor;
+      z-index: 10;
+    }
+  }
+  @else if $direction == top  {
+    &:before{
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      left: 0;
+      right: auto;
+      top: 0px;
+      bottom: auto;
+      transform: scaleY(0.5);
+      transform-origin: 0 0;
+      pointer-events: none;
+      box-sizing: border-box;
+      background: $borderColor;
+      z-index: 2;
+    }
+  }@else {
+    &:after{
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0; left: 0;
+      width: 200%;
+      height: 200%;
+      border:1px solid #d9d9d9;
+      border-radius: 6px;
+      transform: scale(0.5);
+      transform-origin: 0 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+  }
+}
+
+@mixin testOverflow($overNum: 1) {
+  @if $overNum == 1 {
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+  }
+  @if $overNum > 1 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $overNum;
+  }
+}
+@function str-replace($string, $search, $replace: '') {
+  $index: str-index($string, $search);
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+  }
+  @return $string;
+}
+@mixin webpbg($url) {
+  background-image: url($url);
+  @at-root .webp & {
+    $t_url: str-replace($url, '.png', '.webp');
+    $t_url: str-replace($t_url, '.jpg', '.webp');
+    background-image: url($t_url);
+  }
+}
+
+.clamp-2{
+  overflow : hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  white-space:normal;
+  word-break:keep-all;
+  word-wrap: break-word;
+}
+
+.cover-img{
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 50%;
+}
+
+.contain-img{
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-color: transparent;
+  background-position: 50% 50%;
+}
+
+.abs-c{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+}
+
+@mixin none-data() {
+  display: block;
+  width: 100%;
+  line-height: 50px;
+  text-align: center;
+  color: #888;
+  font-size: 28px;
+  margin-bottom: 20px;
+  &:before{
+    content: '';
+    display: block;
+    width: 200px;
+    height: 200px;
+    margin: 10px auto;
+    background-image: url("~assets/image/no-data.png");
+    background-size: cover;
+  }
+}
